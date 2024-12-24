@@ -8,22 +8,20 @@ class AuthRepo{
   final SharedPreferences sharedPreferences;
   AuthRepo({required this.apiClient, required this.sharedPreferences});
 
-/*  Future<Response> login({required String phone, required String password}) async {
+  Future<Response> login({required String email, required String password}) async {
     return apiClient.postData(AppConstants.loginUri, {
-      'phone': phone,
+      'email': email,
       'password': password,
-      'user_type': 'customer',
     });
   }
 
-  Future<Response> register({required String name, required String phone, required String password, required String confirmPassword, required String address}) async {
+  Future<Response> register({required String name, /*required String phone, */required String password, required String confirmPassword, required String email}) async {
     return apiClient.postData(AppConstants.registerUri, {
       'name' : name,
-      'phone': phone,
+      // 'phone': phone,
       'password': password,
-      'confirm-password': confirmPassword,
-      'address': address,
-      'user_type': 'customer',
+      'confirm_password': confirmPassword,
+      'email': email,
     });
   }
 
@@ -40,6 +38,6 @@ class AuthRepo{
   Future<void> removeToken() async {
     await sharedPreferences.remove(AppConstants.token);
     apiClient.token = '';
-  }*/
+  }
 
 }

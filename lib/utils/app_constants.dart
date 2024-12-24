@@ -3,10 +3,10 @@ class AppConstants  {
   static const double appVersion = 1.0;
   static const String fontFamily = 'Roboto';
 
-  static const String baseUrl = '';
+  static const String baseUrl = 'http://192.168.50.229/library-management-admin/public';
 
-  // static const String loginUri = '/api/v1/customer/login';
-  // static const String registerUri = '/api/v1/customer/register';
+  static const String loginUri = '/api/user/login';
+  static const String registerUri = '/api/user/register';
   // static const String logoutUri = '/api/v1/customer/logout';
   //
   // static const String profileUri = '/api/v1/customer/profile';

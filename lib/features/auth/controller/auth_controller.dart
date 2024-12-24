@@ -14,13 +14,13 @@ class AuthController extends GetxController implements GetxService{
   bool _isLoading = false;
   bool get isLoading => _isLoading;
 
-/*  Future<void> login({required String phone, required String password}) async {
+  Future<void> login({required String email, required String password}) async {
     _isLoading = true;
     update();
 
-    final response = await authRepo.login(phone: phone, password: password);
+    final response = await authRepo.login(email: email, password: password);
     if(response.statusCode == 200) {
-      final token = response.body['content']['token'];
+      final token = response.body['access_token'];
       await authRepo.saveUserToken(token);
       Get.offAll(() => const DashboardScreen(pageIndex: 0));
     }else {
@@ -35,13 +35,13 @@ class AuthController extends GetxController implements GetxService{
     return authRepo.isLoggedIn();
   }
 
-  Future<void> register({required String name, required String phone, required String password, required String confirmPassword, required String address}) async {
+  Future<void> register({required String name, /*required String phone, */required String password, required String confirmPassword, required String email}) async {
     _isLoading = true;
     update();
 
-    final response = await authRepo.register(name: name, phone: phone, password: password, confirmPassword: confirmPassword, address: address);
-    if(response.statusCode == 200) {
-      final token = response.body['content']['token'];
+    final response = await authRepo.register(name: name, password: password, confirmPassword: confirmPassword, email: email);
+    if(response.statusCode == 201) {
+      final token = response.body['access_token'];
       await authRepo.saveUserToken(token);
       showCustomSnackBar('You have successfully registered', isError: false);
       Get.offAll(() => const DashboardScreen(pageIndex: 0));
@@ -55,6 +55,6 @@ class AuthController extends GetxController implements GetxService{
 
   Future<void> removeToken() async {
     await authRepo.removeToken();
-  }*/
+  }
 
 }

@@ -39,16 +39,16 @@ class _SignInScreenState extends State<SignInScreen> {
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: Column(
                   children: [
-                    SizedBox(height: constraints.maxHeight * 0.1),
+                    SizedBox(height: constraints.maxHeight * 0.05),
                     Image.asset(
                       Images.logo,
-                      height: 100,
+                      height: 200,
                     ),
-                    Text(
-                      AppConstants.appName,
-                      style: Theme.of(context).textTheme.headlineSmall!.copyWith(fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(height: constraints.maxHeight * 0.1),
+                    // Text(
+                    //   AppConstants.appName,
+                    //   style: Theme.of(context).textTheme.headlineSmall!.copyWith(fontWeight: FontWeight.bold),
+                    // ),
+                    SizedBox(height: constraints.maxHeight * 0.01),
 
                     Text(
                       "Sign In",
@@ -59,8 +59,8 @@ class _SignInScreenState extends State<SignInScreen> {
                     Column(
                       children: [
                         CustomTextField(
-                          labelText: 'Phone',
-                          hintText: 'Enter your phone number',
+                          labelText: 'Email',
+                          hintText: 'Enter your email',
                           controller: _phoneController,
                           focusNode: _phoneFocus,
                           nextFocus: _passwordFocus,
@@ -84,16 +84,16 @@ class _SignInScreenState extends State<SignInScreen> {
                           isLoading: authController.isLoading,
                           onTap: () {
                             if(_phoneController.text.isEmpty) {
-                              showCustomSnackBar('Please enter phone number');
-                            }else if (!RegExp(r'^01[3-9]\d{8}$').hasMatch(_phoneController.text)) {
+                              showCustomSnackBar('Please enter email');
+                            }/*else if (!RegExp(r'^01[3-9]\d{8}$').hasMatch(_phoneController.text)) {
                               showCustomSnackBar('Please enter a valid Bangladeshi phone number');
-                            }else if(_passwordController.text.isEmpty) {
+                            }*/else if(_passwordController.text.isEmpty) {
                               showCustomSnackBar('Please enter password');
                             }else {
-                              /*authController.login(
-                                phone: _phoneController.text,
+                              authController.login(
+                                email: _phoneController.text,
                                 password: _passwordController.text,
-                              );*/
+                              );
                             }
                           },
                         ),

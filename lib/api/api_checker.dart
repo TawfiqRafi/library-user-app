@@ -16,9 +16,9 @@ class ApiChecker {
         case 200:
           message = "Request was successful.";
           break;
-        case 201:
+        /*case 201:
           message = "Resource was created successfully.";
-          break;
+          break;*/
         case 204:
           message = "No content to display.";
           break;
