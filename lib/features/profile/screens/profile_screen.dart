@@ -25,7 +25,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       appBar: CustomAppBar(
         title: 'Profile', backButton: false,
       ),
-      /*body: GetBuilder<ProfileController>(builder: (profileController) {
+      body: GetBuilder<ProfileController>(builder: (profileController) {
         return SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(Dimensions.paddingSizeTwenty),
@@ -38,7 +38,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(100),
-                  child: CustomNetworkImage(image: profileController.profileModel?.content?.image ?? '', height: 80, width: 80, fit: BoxFit.cover),
+                  child: CustomNetworkImage(image: profileController.profileModel?.content?.image ?? '',
+                      height: 80,
+                      width: 80,
+                      fit: BoxFit.cover),
                 ),
               ),
               const SizedBox(height: Dimensions.paddingSizeFifteen),
@@ -53,13 +56,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 margin: const EdgeInsets.only(bottom: Dimensions.paddingSizeFifteen),
                 child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
 
-                  Text('Name: ${profileController.profileModel?.content?.firstName ?? ''}', style: robotoBold.copyWith(fontSize: 16)),
+                  Text('Name: ${profileController.profileModel?.content?.firstName ?? ''}', style: robotoBold.copyWith(
+                      fontSize: 16)),
                   const SizedBox(height: Dimensions.paddingSizeTen),
 
-                  Text('Phone: ${profileController.profileModel?.content?.phone ?? ''}', style: robotoRegular.copyWith(fontSize: 16)),
+                  Text('Phone: ${profileController.profileModel?.content?.phone ?? ''}', style: robotoRegular.copyWith(
+                      fontSize: 16)),
                   const SizedBox(height: Dimensions.paddingSizeTen),
 
-                  Text('Address: ${profileController.profileModel?.content?.address ?? ''}', style: robotoRegular.copyWith(fontSize: 16)),
+                  Text('Address: ${profileController.profileModel?.content?.address ?? ''}', style: robotoRegular
+                      .copyWith(fontSize: 16)),
 
                 ]),
               ),
@@ -82,7 +88,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
               InkWell(
                 onTap: () {
-                  //profileController.logout();
+                  profileController.logout();
                 },
                 child: ListTile(
                   tileColor: AppColor.grey.withOpacity(0.15),
@@ -98,7 +104,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ]),
           ),
         );
-      },*/
-    );
+      }));
   }
 }
