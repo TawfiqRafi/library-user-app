@@ -7,6 +7,6 @@ class AppColor {
   static const Color green = Color(0xff00322A);
   static const Color deepGreen = Color(0xff001915);
   static const Color grey = Color(0xff7B7B7B);
-  static const Color errorColor = Color(0xff800015);
+  static const Color errorColor = Colors.red;
   static const Color shimmerColor = Color(0xffE0E0E0);
 }

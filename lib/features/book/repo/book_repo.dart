@@ -12,4 +12,8 @@ class BookRepo {
     });
   }
 
+  Future<Response> getBookList({required String offset}) async {
+    return await apiClient.getData('${AppConstants.bookList}?limit=10&offset=$offset');
+  }
+
 }

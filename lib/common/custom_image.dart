@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:library_user_app/utils/app_constants.dart';
 import 'package:library_user_app/utils/images.dart';
 
 class CustomNetworkImage extends StatelessWidget {
@@ -14,7 +15,8 @@ class CustomNetworkImage extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return CachedNetworkImage(
-      imageUrl: image, height: height, width: width, fit: fit,
+      imageUrl: '${AppConstants.baseUrl}/$image',
+      height: height, width: width, fit: fit,
       placeholder: (context, url) => Image.asset(Images.placeholder, height: height, width: width, fit: fit),
       errorWidget: (context, url, error) => Image.asset(Images.placeholder, height: height, width: width, fit: fit),
     );

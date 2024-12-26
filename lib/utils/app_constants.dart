@@ -13,6 +13,7 @@ class AppConstants  {
   // static const String updateProfileUri = '/api/v1/customer/profile-update';
 
   static const String borrowBook = '/api/borrow-book';
+  static const String bookList = '/api/books';
 
   static const String token = 'library_user_app_token';
 }

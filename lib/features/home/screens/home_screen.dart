@@ -1,14 +1,10 @@
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:library_user_app/common/custom_image.dart';
-import 'package:library_user_app/features/auth/controller/auth_controller.dart';
-import 'package:library_user_app/features/auth/screens/sign_in_screen.dart';
-import 'package:library_user_app/features/home/controller/home_controller.dart';
+import 'package:library_user_app/features/book/controller/book_controller.dart';
 import 'package:library_user_app/utils/app_color.dart';
 import 'package:library_user_app/utils/dimensions.dart';
 import 'package:library_user_app/utils/styles.dart';
-import 'package:shimmer/shimmer.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -18,11 +14,36 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final ScrollController _scrollController = ScrollController();
+  final refreshIndicatorKey = GlobalKey<RefreshIndicatorState>();
 
+  @override
+  void initState() {
+    super.initState();
+
+    BookController bookController = Get.find<BookController>();
+    if (bookController.booksList == null) {
+      bookController.getBookList(offset: '1');
+    }
+
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
+        if (!bookController.isLoading && bookController.booksList != null) {
+          int nextPage = (bookController.booksList!.length ~/ bookController.pageSize!) + 1;
+          bookController.showBottomLoader();
+          bookController.getBookList(offset: nextPage.toString());
+        }
+      }
+    });
+  }
+
+  Future<void> _refreshBooks() async {
+    BookController bookController = Get.find<BookController>();
+    await bookController.getBookList(offset: '1', willUpdate: true);
+  }
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -33,141 +54,89 @@ class _HomeScreenState extends State<HomeScreen> {
         automaticallyImplyLeading: false,
         title: Text('Welcome to 6am Tech Library', style: robotoBold.copyWith(fontSize: 18)),
       ),
-      /*body: GetBuilder<HomeController>(builder: (homeController) {
-        return SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(Dimensions.paddingSizeTwenty),
-            child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-
-              homeController.bannerList != null ? homeController.bannerList!.isNotEmpty ? Column(children: [
-                CarouselSlider.builder(
-                  itemCount: homeController.bannerList?.length,
-                  itemBuilder: (context, index, realIndex) {
-                    return ClipRRect(
-                      borderRadius: BorderRadius.circular(Dimensions.radiusTwelve),
-                      child: CustomNetworkImage(
-                        image: homeController.bannerList?[index].imageFullPath ?? '',
-                        fit: BoxFit.cover,
-                        width: double.infinity,
-                        height: 200,
-                      ),
-                    );
-                  },
-                  options: CarouselOptions(
-                    height: 200,
-                    autoPlay: true,
-                    enlargeCenterPage: true,
-                    viewportFraction: 1.0,
-                    onPageChanged: (index, reason) {
-                      homeController.setCurrentIndex(index);
-                    },
-                  ),
-                ),
-                const SizedBox(height: Dimensions.paddingSizeTen),
-
-                Row(mainAxisAlignment: MainAxisAlignment.center, children: List.generate(
-                homeController.bannerList!.length, (index) => AnimatedContainer(
-                  duration: const Duration(milliseconds: 300),
-                  margin: const EdgeInsets.symmetric(horizontal: 5),
-                  height: 10,
-                  width: homeController.currentIndex == index ? 15 : 10,
+      body: GetBuilder<BookController>(
+        builder: (bookController) {
+          return RefreshIndicator(
+            key: refreshIndicatorKey,
+            onRefresh: _refreshBooks,
+            child: bookController.booksList != null ? bookController.booksList!.isNotEmpty ? ListView.builder(
+              controller: _scrollController,
+              padding: const EdgeInsets.all(Dimensions.paddingSizeFifteen),
+              itemCount: bookController.booksList!.length + 1,
+              itemBuilder: (context, index) {
+                if (index == bookController.booksList!.length) {
+                  return bookController.isLoading ? Center(child: CircularProgressIndicator()) : SizedBox.shrink();
+                }
+                return Container(
+                  margin: const EdgeInsets.only(bottom: Dimensions.paddingSizeFifteen),
                   decoration: BoxDecoration(
-                    color: homeController.currentIndex  == index ? AppColor.primary : AppColor.grey,
+                    color: Theme.of(context).cardColor,
                     borderRadius: BorderRadius.circular(10),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Theme.of(context).disabledColor.withOpacity(0.1),
+                        spreadRadius: 1,
+                        blurRadius: 5,
+                        offset: const Offset(0, 1),
+                      ),
+                    ],
                   ),
-                ),
-              )),
-              ]) : const SizedBox() : Shimmer.fromColors(
-                baseColor: AppColor.shimmerColor,
-                highlightColor: AppColor.shimmerColor.withOpacity(0.1),
-                child: Container(
-                  width: double.infinity,
-                  height: 200,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(Dimensions.radiusTwelve),
-                  ),
-                ),
-              ),
-              const SizedBox(height: Dimensions.paddingSizeTwenty),
-
-              Text('Service Categories', style: robotoBold.copyWith(fontSize: Dimensions.fontSizeTwenty)),
-              const SizedBox(height: Dimensions.paddingSizeTen),
-
-              homeController.categoryList != null ? homeController.categoryList!.isNotEmpty ? GridView.builder(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 10,
-                  mainAxisSpacing: 10,
-                  childAspectRatio: 0.8,
-                ),
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: homeController.categoryList!.length,
-                itemBuilder: (context, index) {
-                  final category = homeController.categoryList![index];
-                  return InkWell(
-                    onTap: () {
-
-                    },
-                    child: Card(
-                      elevation: 4,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
+                  child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                      Stack(
                         children: [
-                          Expanded(
-                            child: ClipRRect(
-                              borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
-                              child: CustomNetworkImage(
-                                image: category.image ?? '',
-                                fit: BoxFit.cover,
-                                width: double.infinity,
-                              ),
+                          ClipRRect(
+                            borderRadius: const BorderRadius.vertical(top: Radius.circular(10)),
+                            child: CustomNetworkImage(
+                              image: bookController.booksList![index].image ?? '',
+                              height: 150,
+                              width: double.infinity,
+                              fit: BoxFit.cover,
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
+
+                          Positioned(
+                            top: 10, right: 10,
+                            child: Container(
+                            padding: const EdgeInsets.all(5),
+                            decoration: BoxDecoration(
+                              color: bookController.booksList![index].available ?? false ? AppColor.primary : AppColor.errorColor,
+                              borderRadius: BorderRadius.circular(5),
+                            ),
                             child: Text(
-                              category.name ?? '',
-                              style: robotoBold.copyWith(fontSize: Dimensions.fontSizeSixteen),
-                              textAlign: TextAlign.center,
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 2,
+                              bookController.booksList![index].available ?? false ? 'Available' : 'Not Available',
+                              style: robotoRegular.copyWith(color: AppColor.white, fontSize: 12)
+                            ),
                             ),
                           ),
+
                         ],
                       ),
-                    ),
-                  );
-                },
-              ) : const Center(child: Text("No Categories Available")) : Shimmer.fromColors(
-                baseColor: AppColor.shimmerColor,
-                highlightColor: AppColor.shimmerColor.withOpacity(0.1),
-                child: GridView.builder(
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    crossAxisSpacing: 10,
-                    mainAxisSpacing: 10,
-                    childAspectRatio: 0.8,
-                  ),
-                  itemCount: 4,
-                  shrinkWrap: true,
-                  itemBuilder: (context, index) {
-                    return Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                    );
-                  },
-                ),
-              ),
 
-            ]),
-          ),
-        );
-      }),*/
+
+                      Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Title: ${bookController.booksList![index].title ?? ''}',
+                              style: robotoBold.copyWith(fontSize: 16),
+                            ),
+                            Text(
+                              'Author: ${bookController.booksList![index].author ?? ''}',
+                              style: robotoRegular.copyWith(color: Theme.of(context).disabledColor),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ) : Center(child: Text('No Books Found')) : Center(child: CircularProgressIndicator()),
+          );
+        },
+      ),
     );
   }
 }
