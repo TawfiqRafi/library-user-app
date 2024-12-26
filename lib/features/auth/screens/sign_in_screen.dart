@@ -64,7 +64,6 @@ class _SignInScreenState extends State<SignInScreen> {
                           controller: _phoneController,
                           focusNode: _phoneFocus,
                           nextFocus: _passwordFocus,
-                          inputType: TextInputType.phone,
                         ),
                         const SizedBox(height: 16.0),
 
@@ -75,6 +74,7 @@ class _SignInScreenState extends State<SignInScreen> {
                           focusNode: _passwordFocus,
                           inputType: TextInputType.visiblePassword,
                           isPassword: true,
+                          inputAction: TextInputAction.done,
                         ),
 
                         const SizedBox(height: 30),

@@ -39,7 +39,6 @@ class MyApp extends StatelessWidget {
             colorScheme: ColorScheme.fromSeed(seedColor: AppColor.primary),
             useMaterial3: true,
           ),
-          // initialRoute: RoutesName.getDashboardScreen(),
           initialRoute: authController.isLoggedIn() ? RoutesName.getDashboardScreen() : RoutesName.getSignInScreen(),
           getPages: AppRoutes.appRoutes(),
           defaultTransition: Transition.fadeIn,

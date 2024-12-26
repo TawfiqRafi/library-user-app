@@ -31,7 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
         elevation: 2,
         centerTitle: true,
         automaticallyImplyLeading: false,
-        title: Text('Welcome to Library', style: robotoBold.copyWith(fontSize: 18)),
+        title: Text('Welcome to 6am Tech Library', style: robotoBold.copyWith(fontSize: 18)),
       ),
       /*body: GetBuilder<HomeController>(builder: (homeController) {
         return SingleChildScrollView(
