@@ -4,6 +4,7 @@ import 'package:library_user_app/common/custom_app_bar.dart';
 import 'package:library_user_app/common/custom_image.dart';
 import 'package:library_user_app/features/auth/controller/auth_controller.dart';
 import 'package:library_user_app/features/auth/screens/sign_in_screen.dart';
+import 'package:library_user_app/features/book/screens/borrow_book_history_screen.dart';
 import 'package:library_user_app/features/profile/controller/profile_controller.dart';
 import 'package:library_user_app/features/profile/screens/edit_profile_screen.dart';
 import 'package:library_user_app/utils/app_color.dart';
@@ -84,7 +85,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   trailing: const Icon(Icons.arrow_forward_ios),
                 ),
               ),
-              SizedBox(height: Dimensions.paddingSizeFifteen),
+              const SizedBox(height: Dimensions.paddingSizeFifteen),
+
+              InkWell(
+                onTap: () {
+                  Get.to(() => const BorrowBookHistoryScreen());
+                },
+                child: ListTile(
+                  tileColor: AppColor.grey.withOpacity(0.15),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(Dimensions.radiusEight),
+                  ),
+                  leading: const Icon(Icons.menu_book_rounded),
+                  title: const Text('Borrow Books History'),
+                  trailing: const Icon(Icons.arrow_forward_ios),
+                ),
+              ),
+              const SizedBox(height: Dimensions.paddingSizeFifteen),
 
               InkWell(
                 onTap: () {

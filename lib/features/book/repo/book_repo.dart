@@ -16,4 +16,25 @@ class BookRepo {
     return await apiClient.getData('${AppConstants.bookList}?limit=10&offset=$offset');
   }
 
+  Future<Response> getCurrentBorrowedBooks({required String offset}) async {
+    return await apiClient.getData('${AppConstants.currentBorrowedBooks}?limit=10&offset=$offset');
+  }
+
+  Future<Response> getBorrowBookHistory({required String offset}) async {
+    return await apiClient.getData('${AppConstants.borrowBookHistory}?limit=10&offset=$offset');
+  }
+
+  Future<Response> returnBook({required String barcode}) async {
+    return await apiClient.postData(AppConstants.returnBook, {
+      'barcode': barcode
+    });
+  }
+
+  Future<Response> updateLastPage({required String barcode, required int lastPage}) async {
+    return await apiClient.postData(AppConstants.updateLastPage, {
+      'barcode': barcode,
+      'last_page': lastPage
+    });
+  }
+
 }
