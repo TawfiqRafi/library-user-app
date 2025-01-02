@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:library_user_app/utils/app_color.dart';
 import 'package:library_user_app/utils/dimensions.dart';
 import 'package:library_user_app/utils/styles.dart';
 
@@ -23,7 +22,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       ) : const SizedBox(),
       backgroundColor: Colors.white,
       surfaceTintColor: Colors.white,
-      shadowColor: Theme.of(context).disabledColor.withOpacity(0.5),
+      shadowColor: Theme.of(context).disabledColor.withValues(alpha: 0.5),
       elevation: 2,
       actions: actionWidget != null ? [actionWidget!] : [const SizedBox()],
     );

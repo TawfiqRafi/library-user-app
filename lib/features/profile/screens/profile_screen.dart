@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:library_user_app/common/custom_app_bar.dart';
 import 'package:library_user_app/common/custom_image.dart';
-import 'package:library_user_app/features/auth/controller/auth_controller.dart';
-import 'package:library_user_app/features/auth/screens/sign_in_screen.dart';
 import 'package:library_user_app/features/book/screens/borrow_book_history_screen.dart';
 import 'package:library_user_app/features/profile/controller/profile_controller.dart';
 import 'package:library_user_app/features/profile/screens/edit_profile_screen.dart';
@@ -23,9 +21,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
 
     return Scaffold(
-      appBar: CustomAppBar(
-        title: 'Profile', backButton: false,
-      ),
+      appBar: const CustomAppBar(title: 'Profile', backButton: false),
       body: GetBuilder<ProfileController>(builder: (profileController) {
         return SingleChildScrollView(
           child: Padding(
@@ -39,10 +35,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(100),
-                  child: CustomNetworkImage(image: profileController.profileModel?.content?.image ?? '',
-                      height: 80,
-                      width: 80,
-                      fit: BoxFit.cover),
+                  child: CustomNetworkImage(
+                    image: profileController.profileModel?.image ?? '',
+                    height: 80,
+                    width: 80,
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
               const SizedBox(height: Dimensions.paddingSizeFifteen),
@@ -50,23 +48,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
               Container(
                 width: double.infinity,
                 decoration: BoxDecoration(
-                  color: AppColor.grey.withOpacity(0.15),
+                  color: AppColor.grey.withValues(alpha: 0.15),
                   borderRadius: BorderRadius.circular(Dimensions.radiusEight),
                 ),
                 padding: const EdgeInsets.all(Dimensions.paddingSizeFifteen),
                 margin: const EdgeInsets.only(bottom: Dimensions.paddingSizeFifteen),
                 child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
 
-                  Text('Name: ${profileController.profileModel?.content?.firstName ?? ''}', style: robotoBold.copyWith(
-                      fontSize: 16)),
+                  Text('Name: ${profileController.profileModel?.name ?? ''}', style: robotoBold.copyWith(fontSize: 16)),
                   const SizedBox(height: Dimensions.paddingSizeTen),
 
-                  Text('Phone: ${profileController.profileModel?.content?.phone ?? ''}', style: robotoRegular.copyWith(
-                      fontSize: 16)),
-                  const SizedBox(height: Dimensions.paddingSizeTen),
-
-                  Text('Address: ${profileController.profileModel?.content?.address ?? ''}', style: robotoRegular
-                      .copyWith(fontSize: 16)),
+                  Text('Email: ${profileController.profileModel?.email ?? ''}', style: robotoRegular.copyWith(fontSize: 16)),
 
                 ]),
               ),
@@ -76,7 +68,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   Get.to(() => const EditProfileScreen());
                 },
                 child: ListTile(
-                  tileColor: AppColor.grey.withOpacity(0.15),
+                  tileColor: AppColor.grey.withValues(alpha: 0.15),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(Dimensions.radiusEight),
                   ),
@@ -92,7 +84,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   Get.to(() => const BorrowBookHistoryScreen());
                 },
                 child: ListTile(
-                  tileColor: AppColor.grey.withOpacity(0.15),
+                  tileColor: AppColor.grey.withValues(alpha: 0.15),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(Dimensions.radiusEight),
                   ),
@@ -105,10 +97,29 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
               InkWell(
                 onTap: () {
-                  profileController.logout();
+                  Get.dialog(
+                    AlertDialog(
+                      title: const Text('Logout'),
+                      content: const Text('Are you sure you want to logout?'),
+                      actions: [
+                        ElevatedButton(
+                          onPressed: () {
+                            Get.back();
+                          },
+                          child: const Text('Cancel'),
+                        ),
+                        ElevatedButton(
+                          onPressed: () {
+                            profileController.logout();
+                          },
+                          child: const Text('Logout'),
+                        ),
+                      ],
+                    ),
+                  );
                 },
                 child: ListTile(
-                  tileColor: AppColor.grey.withOpacity(0.15),
+                  tileColor: AppColor.grey.withValues(alpha: 0.15),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(Dimensions.radiusEight),
                   ),

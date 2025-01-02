@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:library_user_app/common/custom_button.dart';
-import 'package:library_user_app/common/custom_drop_down_button.dart';
 import 'package:library_user_app/common/custom_snackbar.dart';
 import 'package:library_user_app/common/custom_text_field.dart';
 import 'package:library_user_app/features/auth/controller/auth_controller.dart';
 import 'package:library_user_app/features/auth/screens/sign_up_screen.dart';
 import 'package:library_user_app/utils/app_color.dart';
-import 'package:library_user_app/utils/app_constants.dart';
 import 'package:library_user_app/utils/images.dart';
 import 'package:library_user_app/utils/styles.dart';
 

@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:library_user_app/common/custom_app_bar.dart';
 import 'package:library_user_app/common/custom_image.dart';
 import 'package:library_user_app/features/book/controller/book_controller.dart';
+import 'package:library_user_app/features/book/screens/book_details_screen.dart';
 import 'package:library_user_app/utils/dimensions.dart';
 import 'package:library_user_app/utils/styles.dart';
 
@@ -23,9 +24,7 @@ class _CurrentBookScreenState extends State<CurrentBookScreen> {
     super.initState();
 
     BookController bookController = Get.find<BookController>();
-    if (bookController.currentBorrowedBooks == null) {
-      bookController.getCurrentBorrowedBooks(offset: '1');
-    }
+    bookController.getCurrentBorrowedBooks(offset: '1', willUpdate: false);
 
     _scrollController.addListener(() {
       if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
@@ -38,77 +37,81 @@ class _CurrentBookScreenState extends State<CurrentBookScreen> {
     });
   }
 
-  Future<void> _refreshBooks() async {
-    BookController bookController = Get.find<BookController>();
-    print('refreshing');
-    await bookController.getCurrentBorrowedBooks(offset: '1');
-  }
-
   @override
   Widget build(BuildContext context) {
 
     return Scaffold(
       appBar: const CustomAppBar(title: 'Current Borrow Book', backButton: false),
       body: GetBuilder<BookController>(builder: (bookController) {
-        return RefreshIndicator(
-          key: refreshIndicatorKey1,
-          onRefresh: _refreshBooks,
-          child: bookController.currentBorrowedBooks != null ? bookController.currentBorrowedBooks!.isNotEmpty ? ListView.builder(
-            controller: _scrollController,
-            padding: const EdgeInsets.all(Dimensions.paddingSizeFifteen),
-            itemCount: bookController.currentBorrowedBooks!.length + 1,
-            itemBuilder: (context, index) {
-              if (index == bookController.currentBorrowedBooks!.length) {
-                return bookController.isLoading ? const Center(child: CircularProgressIndicator()) : const SizedBox.shrink();
-              }
-              return Container(
-                margin: const EdgeInsets.only(bottom: Dimensions.paddingSizeFifteen),
-                decoration: BoxDecoration(
-                  color: Theme.of(context).cardColor,
-                  borderRadius: BorderRadius.circular(10),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Theme.of(context).disabledColor.withValues(alpha: 0.1),
-                      spreadRadius: 1,
-                      blurRadius: 5,
-                      offset: const Offset(0, 1),
-                    ),
-                  ],
-                ),
-                child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                  ClipRRect(
-                    borderRadius: const BorderRadius.vertical(top: Radius.circular(10)),
-                    child: CustomNetworkImage(
-                      image: bookController.currentBorrowedBooks![index].book?.image ?? '',
-                      height: 150,
-                      width: double.infinity,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-
-
-                  Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Title: ${bookController.currentBorrowedBooks![index].book?.title ?? ''}',
-                          style: robotoBold.copyWith(fontSize: 16),
+        return bookController.currentBorrowedBooks != null ? bookController.currentBorrowedBooks!.isNotEmpty ? Column(
+          children: [
+            Expanded(
+              child: ListView.builder(
+                controller: _scrollController,
+                padding: const EdgeInsets.all(Dimensions.paddingSizeFifteen),
+                itemCount: bookController.currentBorrowedBooks!.length,
+                itemBuilder: (context, index) {
+                  return InkWell(
+                    onTap: () {
+                      Get.to(() => BookDetailsScreen(borrowBook: bookController.currentBorrowedBooks![index]));
+                    },
+                    child: Container(
+                      margin: const EdgeInsets.only(bottom: Dimensions.paddingSizeFifteen),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).cardColor,
+                        borderRadius: BorderRadius.circular(10),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Theme.of(context).disabledColor.withValues(alpha: 0.1),
+                            spreadRadius: 1,
+                            blurRadius: 5,
+                            offset: const Offset(0, 1),
+                          ),
+                        ],
+                      ),
+                      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                        ClipRRect(
+                          borderRadius: const BorderRadius.vertical(top: Radius.circular(10)),
+                          child: CustomNetworkImage(
+                            image: bookController.currentBorrowedBooks![index].book?.image ?? '',
+                            height: 150,
+                            width: double.infinity,
+                            fit: BoxFit.cover,
+                          ),
                         ),
-                        Text(
-                          'Author: ${bookController.currentBorrowedBooks![index].book?.author ?? ''}',
-                          style: robotoRegular.copyWith(color: Theme.of(context).disabledColor),
+
+
+                        Padding(
+                          padding: const EdgeInsets.all(10),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Title: ${bookController.currentBorrowedBooks![index].book?.title ?? ''}',
+                                style: robotoBold.copyWith(fontSize: 16),
+                              ),
+                              Text(
+                                'Author: ${bookController.currentBorrowedBooks![index].book?.author ?? ''}',
+                                style: robotoRegular.copyWith(color: Theme.of(context).disabledColor),
+                              ),
+                            ],
+                          ),
                         ),
                       ],
+                      ),
                     ),
-                  ),
-                ],
-                ),
-              );
-            },
-          ) : const Center(child: Text('No Books Found')) : const Center(child: CircularProgressIndicator()),
-        );
+                  );
+                },
+              ),
+            ),
+
+            bookController.isLoading ? const Center(child: Padding(
+              padding: EdgeInsets.all(Dimensions.paddingSizeFifteen),
+              child: CircularProgressIndicator(),
+            )) : const SizedBox.shrink(),
+
+          ],
+        ) : const Center(child: Text('No Books Found')) : const Center(child: CircularProgressIndicator());
       }),
     );
   }

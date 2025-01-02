@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:library_user_app/common/custom_button.dart';
-import 'package:library_user_app/common/custom_drop_down_button.dart';
 import 'package:library_user_app/common/custom_snackbar.dart';
 import 'package:library_user_app/common/custom_text_field.dart';
 import 'package:library_user_app/features/auth/controller/auth_controller.dart';
 import 'package:library_user_app/features/auth/screens/sign_in_screen.dart';
 import 'package:library_user_app/utils/app_color.dart';
-import 'package:library_user_app/utils/app_constants.dart';
 import 'package:library_user_app/utils/images.dart';
 import 'package:library_user_app/utils/styles.dart';
 
@@ -21,13 +19,11 @@ class SignUpScreen extends StatefulWidget {
 
 class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
 
   final FocusNode _nameFocus = FocusNode();
-  final FocusNode _phoneFocus = FocusNode();
   final FocusNode _passwordFocus = FocusNode();
   final FocusNode _confirmPasswordFocus = FocusNode();
   final FocusNode _emailFocus = FocusNode();

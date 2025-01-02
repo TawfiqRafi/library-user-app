@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:library_user_app/api/api_checker.dart';
 import 'package:library_user_app/common/custom_snackbar.dart';
 import 'package:library_user_app/features/book/models/book_list_model.dart';
@@ -19,6 +20,9 @@ class BookController extends GetxController implements GetxService {
 
   bool _isLoading = false;
   bool get isLoading => _isLoading;
+
+  bool _isLastPageLoading = false;
+  bool get isLastPageLoading => _isLastPageLoading;
   
   List<Books>? _booksList;
   List<Books>? get booksList => _booksList;
@@ -28,6 +32,9 @@ class BookController extends GetxController implements GetxService {
 
   List<BorrowBook>? _borrowBookHistory;
   List<BorrowBook>? get borrowBookHistory => _borrowBookHistory;
+
+  XFile? _pickedBookImage;
+  XFile? get pickedBookImage => _pickedBookImage;
 
   Future<bool> borrowBook({required String barcode}) async {
     Response response = await bookRepo.borrowBook(barcode: barcode);
@@ -144,6 +151,7 @@ class BookController extends GetxController implements GetxService {
     if(response.statusCode == 200) {
       showCustomSnackBar('Book returned successfully', isError: false);
       await getCurrentBorrowedBooks(offset: '1');
+      await getBorrowBookHistory(offset: '1');
       Get.back();
     } else {
       ApiChecker.checkApi(response);
@@ -155,15 +163,52 @@ class BookController extends GetxController implements GetxService {
   }
 
   Future<bool> updateLastPage({required String barcode, required int lastPage}) async {
+    _isLastPageLoading = true;
+    update();
+
     Response response = await bookRepo.updateLastPage(barcode: barcode, lastPage: lastPage);
     if(response.statusCode == 200) {
       showCustomSnackBar('Last page updated successfully', isError: false);
       await getCurrentBorrowedBooks(offset: '1');
-      Get.to(() => const DashboardScreen(pageIndex: 1));
+      await getBorrowBookHistory(offset: '1');
+      Get.back();
     } else {
       ApiChecker.checkApi(response);
     }
+
+    _isLastPageLoading = false;
+    update();
     return response.statusCode == 200;
+  }
+
+  void pickImage() async {
+    _pickedBookImage = await ImagePicker().pickImage(source: ImageSource.gallery);
+    update();
+  }
+
+  void initData() {
+    _pickedBookImage = null;
+  }
+
+  Future<void> addBook({required String? title, String? author}) async {
+    _isLoading = true;
+    update();
+
+    Map<String, String> body = {
+      'title' : title ?? '',
+      'author': author ?? '',
+    };
+
+    final response = await bookRepo.addBook(body, _pickedBookImage);
+    if(response.statusCode == 200) {
+      getBookList(offset: '1');
+      Get.back();
+      showCustomSnackBar('Book Added Successfully', isError: false);
+    }else{
+      ApiChecker.checkApi(response);
+    }
+    _isLoading = false;
+    update();
   }
 
 }

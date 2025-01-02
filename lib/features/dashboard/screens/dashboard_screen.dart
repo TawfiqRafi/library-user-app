@@ -45,10 +45,10 @@ class DashboardScreenState extends State<DashboardScreen> {
       const ProfileScreen(),
     ];
 
-   /* bool isLogin = Get.find<AuthController>().isLoggedIn();
+    bool isLogin = Get.find<AuthController>().isLoggedIn();
     if(isLogin){
       Get.find<ProfileController>().getProfile();
-    }*/
+    }
 
   }
 

@@ -7,16 +7,12 @@ class ProfileRepo {
   final ApiClient apiClient;
   ProfileRepo({required this.apiClient});
 
-/*  Future<Response> getProfile() async {
+  Future<Response> getProfile() async {
     return await apiClient.getData(AppConstants.profileUri);
-  }
-
-  Future<Response> logout() async {
-    return await apiClient.postData(AppConstants.logoutUri, {});
   }
 
   Future<Response> updateProfile(Map<String, String> body, XFile? image) async {
     return await apiClient.postMultipartData(AppConstants.updateProfileUri, body, [MultipartBody('image', image)]);
-  }*/
+  }
 
 }

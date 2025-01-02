@@ -4,7 +4,6 @@ import 'package:library_user_app/api/api_checker.dart';
 import 'package:library_user_app/common/custom_snackbar.dart';
 import 'package:library_user_app/features/auth/controller/auth_controller.dart';
 import 'package:library_user_app/features/auth/screens/sign_in_screen.dart';
-import 'package:library_user_app/features/dashboard/screens/dashboard_screen.dart';
 import 'package:library_user_app/features/profile/models/profile_model.dart';
 import 'package:library_user_app/features/profile/repo/profile_repo.dart';
 
@@ -21,15 +20,15 @@ class ProfileController extends GetxController implements GetxService{
   XFile? _pickedFile;
   XFile? get pickedFile => _pickedFile;
 
-  // Future<void> getProfile() async {
-  //   final response = await profileRepo.getProfile();
-  //   if(response.statusCode == 200) {
-  //     _profileModel = ProfileModel.fromJson(response.body);
-  //   }else{
-  //     ApiChecker.checkApi(response);
-  //   }
-  //   update();
-  // }
+  Future<void> getProfile() async {
+    final response = await profileRepo.getProfile();
+    if(response.statusCode == 200) {
+      _profileModel = ProfileModel.fromJson(response.body);
+    }else{
+      ApiChecker.checkApi(response);
+    }
+    update();
+  }
 
   Future<void> logout() async {
     Get.find<AuthController>().removeToken();
@@ -46,29 +45,26 @@ class ProfileController extends GetxController implements GetxService{
     _pickedFile = null;
   }
 
-  // Future<void> updateUserInfo({required String name, required String phone, required String password, required String confirmPassword, required String address}) async {
-  //   _isLoading = true;
-  //   update();
-  //
-  //   Map<String, String> body = {
-  //     'name' : name,
-  //     'phone': phone,
-  //     'password': password,
-  //     'confirm-password': confirmPassword,
-  //     'address': address,
-  //     'user_type': 'customer',
-  //   };
-  //
-  //   final response = await profileRepo.updateProfile(body, _pickedFile);
-  //   if(response.statusCode == 200) {
-  //     getProfile();
-  //     Get.back();
-  //     showCustomSnackBar('Profile Update Successfully', isError: false);
-  //   }else{
-  //     ApiChecker.checkApi(response);
-  //   }
-  //   _isLoading = false;
-  //   update();
-  // }
+  Future<void> updateUserInfo({String? name, String? email, String? password, String? confirmPassword}) async {
+    _isLoading = true;
+    update();
+
+    Map<String, String> body = {
+      'name' : name ?? '',
+      'email': email ?? '',
+      'password': password ?? '',
+    };
+
+    final response = await profileRepo.updateProfile(body, _pickedFile);
+    if(response.statusCode == 200) {
+      getProfile();
+      Get.back();
+      showCustomSnackBar('Profile Update Successfully', isError: false);
+    }else{
+      ApiChecker.checkApi(response);
+    }
+    _isLoading = false;
+    update();
+  }
 
 }

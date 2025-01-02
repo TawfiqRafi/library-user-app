@@ -7,10 +7,9 @@ class AppConstants  {
 
   static const String loginUri = '/api/user/login';
   static const String registerUri = '/api/user/register';
-  // static const String logoutUri = '/api/v1/customer/logout';
-  //
-  // static const String profileUri = '/api/v1/customer/profile';
-  // static const String updateProfileUri = '/api/v1/customer/profile-update';
+
+  static const String profileUri = '/api/user/profile';
+  static const String updateProfileUri = '/api/user/update';
 
   static const String borrowBook = '/api/borrow-book';
   static const String bookList = '/api/books';
@@ -18,6 +17,7 @@ class AppConstants  {
   static const String borrowBookHistory = '/api/borrowing-history';
   static const String returnBook = '/api/return-book';
   static const String updateLastPage = '/api/update-last-page';
+  static const String addBook = '/api/books/store';
 
   static const String token = 'library_user_app_token';
 }

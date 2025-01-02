@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:library_user_app/api/api_client.dart';
 import 'package:library_user_app/utils/app_constants.dart';
 
@@ -35,6 +36,10 @@ class BookRepo {
       'barcode': barcode,
       'last_page': lastPage
     });
+  }
+
+  Future<Response> addBook(Map<String, String> body, XFile? image) async {
+    return await apiClient.postMultipartData(AppConstants.addBook, body, [MultipartBody('image', image)]);
   }
 
 }

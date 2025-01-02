@@ -5,7 +5,6 @@ import 'package:get/get_connect/http/src/request/request.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:library_user_app/api/error_response.dart';
-import 'package:library_user_app/features/auth/controller/auth_controller.dart';
 import 'package:library_user_app/utils/app_constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
