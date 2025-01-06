@@ -4,6 +4,7 @@ import 'package:library_user_app/common/custom_app_bar.dart';
 import 'package:library_user_app/common/custom_image.dart';
 import 'package:library_user_app/features/book/controller/book_controller.dart';
 import 'package:library_user_app/features/book/screens/book_details_screen.dart';
+import 'package:library_user_app/features/book/widgets/book_list_shimmer.dart';
 import 'package:library_user_app/utils/dimensions.dart';
 import 'package:library_user_app/utils/styles.dart';
 
@@ -111,7 +112,7 @@ class _CurrentBookScreenState extends State<CurrentBookScreen> {
             )) : const SizedBox.shrink(),
 
           ],
-        ) : const Center(child: Text('No Books Found')) : const Center(child: CircularProgressIndicator());
+        ) : const Center(child: Text('No Books Found')) : const BookListShimmer();
       }),
     );
   }

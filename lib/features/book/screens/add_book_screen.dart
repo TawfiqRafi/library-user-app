@@ -1,15 +1,14 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:library_user_app/common/custom_app_bar.dart';
 import 'package:library_user_app/common/custom_button.dart';
+import 'package:library_user_app/common/custom_image.dart';
 import 'package:library_user_app/common/custom_snackbar.dart';
 import 'package:library_user_app/common/custom_text_field.dart';
 import 'package:library_user_app/features/book/controller/book_controller.dart';
+import 'package:library_user_app/utils/app_color.dart';
 import 'package:library_user_app/utils/dimensions.dart';
-
-import '../../../common/custom_image.dart';
 
 class AddBookScreen extends StatefulWidget {
   const AddBookScreen({super.key});
@@ -29,7 +28,7 @@ class _AddBookScreenState extends State<AddBookScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CustomAppBar(title: 'Add Book', backButton: false),
+      appBar: const CustomAppBar(title: 'Add Book'),
       body: GetBuilder<BookController>(
         builder: (bookController) {
           return Column(
@@ -43,9 +42,8 @@ class _AddBookScreenState extends State<AddBookScreen> {
           
                       ClipRRect(
                         borderRadius: BorderRadius.circular(Dimensions.radiusTen),
-                          child: bookController.pickedBookImage != null ? GetPlatform.isWeb ? Image.network(
-                          bookController.pickedBookImage!.path, width: 80, height: 80, fit: BoxFit.cover) : Image.file(
-                          File(bookController.pickedBookImage!.path), width: 80, height: 80, fit: BoxFit.cover) : const CustomNetworkImage(
+                          child: bookController.pickedBookImage != null ? Image.file(
+                          File(bookController.pickedBookImage!.path), height: 150, width: 200, fit: BoxFit.cover) : const CustomNetworkImage(
                         image: '',
                         height: 150, width: 200, fit: BoxFit.cover,
                       )),
@@ -87,18 +85,17 @@ class _AddBookScreenState extends State<AddBookScreen> {
                       hintText: 'Author',
                     ),
           
-          
                   ]),
                 ),
               ),
           
           
               Container(
-                decoration: BoxDecoration(
-                  color: Theme.of(context).cardColor,
-                  boxShadow: const [BoxShadow(color: Colors.black12, spreadRadius: 1, blurRadius: 5)],
+                decoration: const BoxDecoration(
+                  color: AppColor.white,
+                  boxShadow: [BoxShadow(color: Colors.black12, spreadRadius: 1, blurRadius: 5)],
                 ),
-                padding: const EdgeInsets.all(Dimensions.paddingSizeThirty),
+                padding: const EdgeInsets.all(Dimensions.paddingSizeTwenty),
                 child: CustomButton(
                   isLoading: bookController.isLoading,
                   text: 'Add Book',

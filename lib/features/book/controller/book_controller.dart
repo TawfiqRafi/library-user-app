@@ -36,6 +36,9 @@ class BookController extends GetxController implements GetxService {
   XFile? _pickedBookImage;
   XFile? get pickedBookImage => _pickedBookImage;
 
+  List<Books>? _myAddedBookList;
+  List<Books>? get myAddedBookList => _myAddedBookList;
+
   Future<bool> borrowBook({required String barcode}) async {
     Response response = await bookRepo.borrowBook(barcode: barcode);
     if(response.statusCode == 200) {
@@ -202,6 +205,7 @@ class BookController extends GetxController implements GetxService {
     final response = await bookRepo.addBook(body, _pickedBookImage);
     if(response.statusCode == 200) {
       getBookList(offset: '1');
+      getMyAddedBookList(offset: '1');
       Get.back();
       showCustomSnackBar('Book Added Successfully', isError: false);
     }else{
@@ -209,6 +213,58 @@ class BookController extends GetxController implements GetxService {
     }
     _isLoading = false;
     update();
+  }
+
+  Future<void> editBook({required String? title, String? author, required int bookId}) async {
+    _isLoading = true;
+    update();
+
+    Map<String, String> body = {
+      'title' : title ?? '',
+      'author': author ?? '',
+      '_method': 'put',
+    };
+
+    final response = await bookRepo.editBook(body, _pickedBookImage, bookId);
+    if(response.statusCode == 200) {
+      getMyAddedBookList(offset: '1');
+      Get.back();
+      showCustomSnackBar('Book Updated Successfully', isError: false);
+    }else{
+      ApiChecker.checkApi(response);
+    }
+    _isLoading = false;
+    update();
+  }
+
+  Future<void> getMyAddedBookList({required String offset, bool willUpdate = true}) async {
+    if (offset == '1') {
+      _offsetList.clear();
+      _offset = 1;
+      _myAddedBookList = null;
+      if(willUpdate) {
+        update();
+      }
+    }
+
+    if (!_offsetList.contains(offset)) {
+      _offsetList.add(offset);
+      Response response = await bookRepo.getMyAddedBookList(offset: offset);
+      if (response.statusCode == 200) {
+        if (offset == '1') {
+          _myAddedBookList = [];
+        }
+        _myAddedBookList?.addAll(BookListModel.fromJson(response.body).books!);
+        _pageSize = BookListModel.fromJson(response.body).totalSize;
+        _isLoading = false;
+        update();
+      }
+    } else {
+      if(isLoading) {
+        _isLoading = false;
+        update();
+      }
+    }
   }
 
 }

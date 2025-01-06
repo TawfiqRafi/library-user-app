@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:library_user_app/common/custom_app_bar.dart';
 import 'package:library_user_app/common/custom_image.dart';
+import 'package:library_user_app/features/book/screens/add_book_screen.dart';
 import 'package:library_user_app/features/book/screens/borrow_book_history_screen.dart';
 import 'package:library_user_app/features/profile/controller/profile_controller.dart';
 import 'package:library_user_app/features/profile/screens/edit_profile_screen.dart';
@@ -97,22 +98,41 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
               InkWell(
                 onTap: () {
+                  Get.to(() => const AddBookScreen());
+                },
+                child: ListTile(
+                  tileColor: AppColor.grey.withValues(alpha: 0.15),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(Dimensions.radiusEight),
+                  ),
+                  leading: const Icon(Icons.my_library_books),
+                  title: const Text('Add Book'),
+                  trailing: const Icon(Icons.arrow_forward_ios),
+                ),
+              ),
+              const SizedBox(height: Dimensions.paddingSizeFifteen),
+
+              InkWell(
+                onTap: () {
                   Get.dialog(
                     AlertDialog(
+                      backgroundColor: AppColor.white,
                       title: const Text('Logout'),
                       content: const Text('Are you sure you want to logout?'),
                       actions: [
                         ElevatedButton(
+                          style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
                           onPressed: () {
                             Get.back();
                           },
-                          child: const Text('Cancel'),
+                          child: Text('Cancel', style: robotoMedium.copyWith(color: AppColor.white)),
                         ),
                         ElevatedButton(
+                          style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
                           onPressed: () {
                             profileController.logout();
                           },
-                          child: const Text('Logout'),
+                          child: Text('Logout', style: robotoMedium.copyWith(color: AppColor.white)),
                         ),
                       ],
                     ),

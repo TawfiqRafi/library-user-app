@@ -18,6 +18,8 @@ class AppConstants  {
   static const String returnBook = '/api/return-book';
   static const String updateLastPage = '/api/update-last-page';
   static const String addBook = '/api/books/store';
+  static const String myBooks = '/api/books/list';
+  static const String editBook = '/api/books/edit';
 
   static const String token = 'library_user_app_token';
 }

@@ -42,4 +42,12 @@ class BookRepo {
     return await apiClient.postMultipartData(AppConstants.addBook, body, [MultipartBody('image', image)]);
   }
 
+  Future<Response> editBook(Map<String, String> body, XFile? image, int bookId) async {
+    return await apiClient.postMultipartData('${AppConstants.editBook}/$bookId', body, [MultipartBody('image', image)]);
+  }
+
+  Future<Response> getMyAddedBookList({required String offset}) async {
+    return await apiClient.getData('${AppConstants.myBooks}?limit=10&offset=$offset');
+  }
+
 }

@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:library_user_app/common/custom_image.dart';
 import 'package:library_user_app/features/book/controller/book_controller.dart';
 import 'package:library_user_app/features/book/screens/book_details_screen.dart';
+import 'package:library_user_app/features/book/widgets/book_list_shimmer.dart';
 import 'package:library_user_app/utils/app_color.dart';
 import 'package:library_user_app/utils/dimensions.dart';
 import 'package:library_user_app/utils/styles.dart';
@@ -16,7 +17,6 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final ScrollController _scrollController = ScrollController();
-  final refreshIndicatorKey = GlobalKey<RefreshIndicatorState>();
 
   @override
   void initState() {
@@ -37,11 +37,6 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-/*  Future<void> _refreshBooks() async {
-    BookController bookController = Get.find<BookController>();
-    await bookController.getBookList(offset: '1', willUpdate: true);
-  }*/
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,7 +47,7 @@ class _HomeScreenState extends State<HomeScreen> {
         elevation: 2,
         centerTitle: true,
         automaticallyImplyLeading: false,
-        title: Text('Welcome to 6am Tech Library', style: robotoBold.copyWith(fontSize: 18)),
+        title: Text('Welcome to 6amTech Library', style: robotoBold.copyWith(fontSize: 18)),
       ),
       body: GetBuilder<BookController>(builder: (bookController) {
         return bookController.booksList != null ? bookController.booksList!.isNotEmpty ? Column(
@@ -142,7 +137,7 @@ class _HomeScreenState extends State<HomeScreen> {
             )) : const SizedBox.shrink(),
 
           ],
-        ) : const Center(child: Text('No Books Found')) : const Center(child: CircularProgressIndicator());
+        ) : const Center(child: Text('No Books Found')) : const BookListShimmer();
       }),
     );
   }

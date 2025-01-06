@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:library_user_app/features/auth/controller/auth_controller.dart';
+import 'package:library_user_app/features/book/screens/my_books_screen.dart';
 import 'package:library_user_app/features/dashboard/widget/bottom_nav_item_widget.dart';
 import 'package:library_user_app/features/qr/screens/qr_screen.dart';
 import 'package:library_user_app/features/home/screens/home_screen.dart';
 import 'package:library_user_app/features/book/screens/current_book_screen.dart';
-import 'package:library_user_app/features/book/screens/add_book_screen.dart';
 import 'package:library_user_app/features/profile/controller/profile_controller.dart';
 import 'package:library_user_app/features/profile/screens/profile_screen.dart';
 import 'package:library_user_app/utils/app_color.dart';
@@ -41,7 +41,7 @@ class DashboardScreenState extends State<DashboardScreen> {
       const HomeScreen(),
       const CurrentBookScreen(),
       const QrScreen(),
-      const AddBookScreen(),
+      const MyBooksScreen(),
       const ProfileScreen(),
     ];
 
@@ -70,7 +70,7 @@ class DashboardScreenState extends State<DashboardScreen> {
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             content: Text('Press back again to exit', style: TextStyle(color: Colors.white)),
             behavior: SnackBarBehavior.floating,
-            backgroundColor: AppColor.primary,
+            backgroundColor: Colors.green,
             duration: Duration(seconds: 2),
             margin: EdgeInsets.all(Dimensions.marginSizeTen),
           ));
@@ -146,8 +146,8 @@ class DashboardScreenState extends State<DashboardScreen> {
             const Expanded(child: SizedBox()),
 
             BottomNavItemWidget(
-              selectedIcon: Icons.add_box,
-              unselectedIcon: Icons.add_box,
+              selectedIcon: Icons.my_library_books,
+              unselectedIcon: Icons.my_library_books,
               isSelected: _pageIndex == 3,
               onTap: () => _setPage(3),
             ),

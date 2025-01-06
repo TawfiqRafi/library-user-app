@@ -8,6 +8,7 @@ import 'package:library_user_app/features/book/screens/book_details_screen.dart'
 import 'package:library_user_app/utils/app_color.dart';
 import 'package:library_user_app/utils/dimensions.dart';
 import 'package:library_user_app/utils/styles.dart';
+import 'package:shimmer/shimmer.dart';
 
 class BorrowBookHistoryScreen extends StatefulWidget {
   const BorrowBookHistoryScreen({super.key});
@@ -128,7 +129,7 @@ class _BorrowBookHistoryScreenState extends State<BorrowBookHistoryScreen> {
             )) : const SizedBox.shrink(),
 
           ],
-        ) : const Center(child: Text('No Books Found')) : const Center(child: CircularProgressIndicator());
+        ) : const Center(child: Text('No Books Found')) : _buildShimmerEffect();
       }),
     );
   }
@@ -139,4 +140,84 @@ class _BorrowBookHistoryScreenState extends State<BorrowBookHistoryScreen> {
     return formattedDate;
   }
 
+}
+
+Widget _buildShimmerEffect() {
+  return ListView.builder(
+    padding: const EdgeInsets.all(Dimensions.paddingSizeFifteen),
+    itemCount: 10,
+    itemBuilder: (context, index) {
+      return Container(
+        margin: const EdgeInsets.only(bottom: 15),
+        padding: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(10),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withValues(alpha: 0.1),
+              spreadRadius: 1,
+              blurRadius: 5,
+              offset: const Offset(0, 1),
+            ),
+          ],
+        ),
+        child: const Row(
+          children: [
+            ShimmerWidget.rectangular(height: 90, width: 100),
+            SizedBox(width: 15),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ShimmerWidget.rectangular(height: 16, width: double.infinity),
+                  SizedBox(height: 8),
+                  ShimmerWidget.rectangular(height: 14, width: 150),
+                  SizedBox(height: 8),
+                  ShimmerWidget.rectangular(height: 14, width: 120),
+                  SizedBox(height: 8),
+                  ShimmerWidget.rectangular(height: 14, width: 150),
+                ],
+              ),
+            ),
+          ],
+        ),
+      );
+    },
+  );
+}
+
+class ShimmerWidget extends StatelessWidget {
+  final double height;
+  final double width;
+  final BorderRadius? borderRadius;
+
+  const ShimmerWidget.rectangular({
+    super.key,
+    required this.height,
+    required this.width,
+    this.borderRadius,
+  });
+
+  const ShimmerWidget.circular({
+    super.key,
+    required this.height,
+    required this.width,
+  }) : borderRadius = const BorderRadius.all(Radius.circular(50));
+
+  @override
+  Widget build(BuildContext context) {
+    return Shimmer.fromColors(
+      baseColor: Colors.grey[300]!,
+      highlightColor: Colors.grey[100]!,
+      child: Container(
+        height: height,
+        width: width,
+        decoration: BoxDecoration(
+          color: Colors.grey[300],
+          borderRadius: borderRadius,
+        ),
+      ),
+    );
+  }
 }
